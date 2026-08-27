@@ -42,6 +42,15 @@
           "execution": {
             "type": "canvas_task_execution"
           }
+        },
+        {
+          "trigger": "renew-a-household-service-personal",
+          "label": "Renew a household service (personal)",
+          "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
+          "enabled": true,
+          "execution": {
+            "type": "canvas_task_execution"
+          }
         }
       ]
     },
@@ -108,7 +117,7 @@
     "title": "Sloane -- Household Procurement AI Persona",
     "description": "Household Procurement AI Persona. Reviews incoming service renewal notices (e.g. home internet), summarizes usage, and drafts a negotiation email before the contract renews. Drafts only, never sends.",
     "longDescription": "Household Procurement AI Persona. Reviews incoming service renewal notices (e.g. home internet), summarizes usage, and drafts a negotiation email before the contract renews. Drafts only, never sends.",
-    "profilePicture": "/assets/gabriel-twins/nora-banking-finance.png",
+    "profilePicture": null,
     "bannerImage": null,
     "bannerType": null,
     "tags": [
@@ -140,5 +149,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1787841166325
+  "updatedAt": 1787841202850
 }
