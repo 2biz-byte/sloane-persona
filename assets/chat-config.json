@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "resourceKey": "persona.sloane",
   "publishedConfig": {
-    "name": "Sloane",
+    "name": "Sloane -- Household Procurement AI Persona",
     "firstMessage": "Hello! I'm Sloane. How can I help you today?",
     "systemPrompt": "You are Sloane, an AI assistant. Household Procurement AI Persona. Reviews incoming service renewal notices (e.g. home internet), summarizes usage, and drafts a negotiation email before the contract renews. Drafts only, never sends.",
     "agentTopology": {
@@ -64,13 +64,27 @@
     "chatCommandModels": {},
     "chatCommandOptions": {},
     "nativeConnectorIds": [],
-    "mcpServerIds": []
+    "mcpServerIds": [],
+    "avatarPreviewPosterUrl": "/assets/gabriel-twins/nora-banking-finance.png",
+    "avatarPreviewVideoUrl": "/assets/gabriel-twins/avatars/nora.mp4",
+    "voiceProvider": "gemini",
+    "geminiLiveModel": "gemini-3.1-flash-live-preview",
+    "geminiLiveVoice": "Aoede",
+    "jarvisMode": {
+      "enabled": false,
+      "localComputerControl": false,
+      "preferredTransport": "runner-choice"
+    },
+    "memoryConfig": {
+      "provider": "inherit",
+      "captureMode": "automatic"
+    }
   },
   "pageProfile": {
-    "title": "Sloane",
+    "title": "Sloane -- Household Procurement AI Persona",
     "description": "Household Procurement AI Persona. Reviews incoming service renewal notices (e.g. home internet), summarizes usage, and drafts a negotiation email before the contract renews. Drafts only, never sends.",
     "longDescription": "Household Procurement AI Persona. Reviews incoming service renewal notices (e.g. home internet), summarizes usage, and drafts a negotiation email before the contract renews. Drafts only, never sends.",
-    "profilePicture": null,
+    "profilePicture": "/assets/gabriel-twins/nora-banking-finance.png",
     "bannerImage": null,
     "bannerType": null,
     "tags": [
@@ -87,6 +101,6 @@
     "assignments": {},
     "collapsedFolderIds": []
   },
-  "commitMessage": "Convert Sloane persona chat config to schema v2 portable",
-  "updatedAt": 1787830357489
+  "commitMessage": "Sync chat config to git",
+  "updatedAt": 1787832232141
 }
