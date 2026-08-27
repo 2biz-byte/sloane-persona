@@ -14,6 +14,7 @@ Private submodules need credentials that can read the linked repositories.
 
 | Kind | Name | Path | Branch |
 |------|------|------|--------|
+| command | Renew a household service (personal) | `references/commands/6a90198a9334d064acf7c5de` | `main` |
 | pipeline | service-renewal-workflow | `references/pipelines/pl-e13390d8fa6d` | `main` |
 
 `registry.json` holds the same mapping as plain JSON, readable without fetching the
