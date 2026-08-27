@@ -9,11 +9,17 @@
       "mode": "single",
       "slashCommands": [
         {
-          "id": "cmd_02997294-7ccb-47fd-975a-31612f3e4a7f",
           "trigger": "renew-a-household-service-personal",
           "label": "Renew a household service (personal)",
           "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
-          "enabled": true,
+          "enabled": false,
+          "execution": {
+            "type": "operator_action",
+            "workflowRef": {
+              "kind": "workflow",
+              "resourceKey": "workflow.sloane.renew-a-household-service-personal"
+            }
+          },
           "workflowRef": {
             "kind": "workflow",
             "resourceKey": "workflow.sloane.renew-a-household-service-personal"
@@ -102,5 +108,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1787832232141
+  "updatedAt": 1787832305922
 }
