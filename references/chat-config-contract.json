@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "target": "chat_config",
+  "pageId": "9beee179-c29d-4d19-9899-8964f57827a1",
+  "definitionFile": "assets/chat-config.json",
+  "referencesRegistryFile": "references/registry.json",
+  "pageProfile": {
+    "description": "Public page display fields. Only these keys are applied on pull; unknown keys are ignored.",
+    "allowedKeys": [
+      "title",
+      "description",
+      "longDescription",
+      "profilePicture",
+      "bannerImage",
+      "bannerType",
+      "tags",
+      "category",
+      "subcategory"
+    ],
+    "neverStoreHere": [
+      "pageSlug",
+      "visibility",
+      "sharedWith",
+      "ownerId",
+      "credits",
+      "apiKeys"
+    ]
+  },
+  "publishedConfig": {
+    "description": "Published assistant runtime (prompts, model, voice, connectors, tools, agentTopology).",
+    "authoritativeType": "DigitalTwinConfig",
+    "authoritativeTypePath": "app/routes/teams/$teamSlug/team-workspaces/$unitSlug/components/configureDigitalTwin.types.ts",
+    "safeReferenceKeys": [
+      "memoryConfig.providerId"
+    ],
+    "neverStoreHere": [
+      "providerSecrets",
+      "honchoWorkspaceId",
+      "rawUserIds",
+      "memoryIdentityHmacKey",
+      "conversationTranscripts",
+      "jarvisConsent",
+      "desktopCapabilities",
+      "localVoiceDeviceSettings",
+      "localVoiceModelState"
+    ]
+  },
+  "embedAppearance": {
+    "description": "Not owned by this file. `chatEmbedConfig` here is ignored on pull.",
+    "file": "assets/embed-config.json",
+    "key": "chatEmbedConfig"
+  }
+}
