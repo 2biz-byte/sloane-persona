@@ -20,6 +20,58 @@
           }
         }
       ]
+    },
+    "llmModel": "auto",
+    "webSearchEnabled": true,
+    "chatImageUpload": {
+      "enabled": true,
+      "mode": "attachment"
+    },
+    "formUi": {
+      "style": "default"
+    },
+    "thirdPartyAppToolsProvider": "composio",
+    "enabledThirdPartyToolProviders": [
+      "composio"
+    ],
+    "qualityControlConfig": {
+      "enabled": false,
+      "subscriberSimulationEnabled": false
+    },
+    "callButtonConfig": {
+      "label": "Talk",
+      "icon": "voice-bars"
+    },
+    "phoneCallButtonConfig": {
+      "label": "Call",
+      "icon": "phone"
+    },
+    "composioKeyId": "42ffe1e5-bf1c-4b79-a044-8eb0e72670e3",
+    "composioEnabledToolkitSlugs": [
+      "gmail",
+      "googlesheets"
+    ],
+    "chatCommandSettings": {
+      "image": false,
+      "video": false,
+      "audio": false,
+      "search": false,
+      "deepsearch": false,
+      "deepresult": false,
+      "skillRun": false
+    },
+    "chatCommandModels": {},
+    "voiceProvider": "gemini",
+    "geminiLiveModel": "gemini-3.1-flash-live-preview",
+    "geminiLiveVoice": "Aoede",
+    "jarvisMode": {
+      "enabled": false,
+      "localComputerControl": false,
+      "preferredTransport": "runner-choice"
+    },
+    "memoryConfig": {
+      "provider": "inherit",
+      "captureMode": "automatic"
     }
   },
   "pageProfile": {
@@ -38,6 +90,11 @@
     "category": "Productivity",
     "subcategory": "Productivity"
   },
-  "commitMessage": "Initial chat config from AI Persona",
-  "updatedAt": 1787828675822
+  "endpointFolderLayout": {
+    "folders": [],
+    "assignments": {},
+    "collapsedFolderIds": []
+  },
+  "commitMessage": "Sync chat config to git",
+  "updatedAt": 1787829595227
 }
