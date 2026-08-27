@@ -1,11 +1,12 @@
 {
-  "schemaVersion": 1,
-  "pageId": "9beee179-c29d-4d19-9899-8964f57827a1",
+  "schemaVersion": 2,
+  "resourceKey": "persona.sloane",
   "publishedConfig": {
     "name": "Sloane",
     "firstMessage": "Hello! I'm Sloane. How can I help you today?",
     "systemPrompt": "You are Sloane, an AI assistant. Household Procurement AI Persona. Reviews incoming service renewal notices (e.g. home internet), summarizes usage, and drafts a negotiation email before the contract renews. Drafts only, never sends.",
     "agentTopology": {
+      "mode": "single",
       "slashCommands": [
         {
           "id": "cmd_02997294-7ccb-47fd-975a-31612f3e4a7f",
@@ -13,10 +14,9 @@
           "label": "Renew a household service (personal)",
           "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
           "enabled": true,
-          "execution": {
-            "type": "operator_action",
-            "automationId": "9beee179-c29d-4d19-9899-8964f57827a1",
-            "actionId": "6a90198a9334d064acf7c5de"
+          "workflowRef": {
+            "kind": "workflow",
+            "resourceKey": "workflow.sloane.renew-a-household-service-personal"
           }
         }
       ]
@@ -30,6 +30,7 @@
     "formUi": {
       "style": "default"
     },
+    "composioChatToolsEnabled": true,
     "thirdPartyAppToolsProvider": "composio",
     "enabledThirdPartyToolProviders": [
       "composio"
@@ -61,18 +62,9 @@
       "skillRun": false
     },
     "chatCommandModels": {},
-    "voiceProvider": "gemini",
-    "geminiLiveModel": "gemini-3.1-flash-live-preview",
-    "geminiLiveVoice": "Aoede",
-    "jarvisMode": {
-      "enabled": false,
-      "localComputerControl": false,
-      "preferredTransport": "runner-choice"
-    },
-    "memoryConfig": {
-      "provider": "inherit",
-      "captureMode": "automatic"
-    }
+    "chatCommandOptions": {},
+    "nativeConnectorIds": [],
+    "mcpServerIds": []
   },
   "pageProfile": {
     "title": "Sloane",
@@ -95,6 +87,6 @@
     "assignments": {},
     "collapsedFolderIds": []
   },
-  "commitMessage": "Sync chat config to git",
+  "commitMessage": "Convert Sloane persona chat config to schema v2 portable",
   "updatedAt": 1787830357489
 }
