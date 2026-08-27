@@ -1,8 +1,12 @@
-[submodule "references/pipelines/pl-e13390d8fa6d"]
-	path = references/pipelines/pl-e13390d8fa6d
+[submodule "references/lists/list-sloane-service-renewals"]
+	path = references/lists/list-sloane-service-renewals
+	url = https://github.com/2biz-byte/sloane-service-renewals-list.git
+	branch = main
+[submodule "references/pipelines/pipeline-sloane-service-renewal-workflow"]
+	path = references/pipelines/pipeline-sloane-service-renewal-workflow
 	url = https://github.com/2biz-byte/sloane-service-renewal-pipeline.git
 	branch = main
-[submodule "references/commands/6a90198a9334d064acf7c5de"]
-	path = references/commands/6a90198a9334d064acf7c5de
+[submodule "references/workflows/workflow-sloane-renew-a-household-service-personal"]
+	path = references/workflows/workflow-sloane-renew-a-household-service-personal
 	url = https://github.com/2biz-byte/sloane-renew-renewal-workflow.git
 	branch = main

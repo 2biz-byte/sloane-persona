@@ -1,22 +1,30 @@
 # AI Persona References
 
-Each repository this AI Persona depends on is linked here as a **git submodule**, so a
-coding agent can clone the persona and reach every pipeline, list, and Operator command
-repository from one place.
+This folder is a **depth-1 composition workspace**. Every linked repository is a git
+submodule of this Persona — never a submodule of another submodule.
 
 ```bash
 git submodule update --init
 ```
 
-Private submodules need credentials that can read the linked repositories.
+## Portable bundle (`registry.json`)
 
-## Linked repositories
+Import materializes one Workflow per distinct command workflowRef, plus exactly one Pipeline and one List.
 
-| Kind | Name | Path | Branch |
-|------|------|------|--------|
-| command | Renew a household service (personal) | `references/commands/6a90198a9334d064acf7c5de` | `main` |
-| pipeline | service-renewal-workflow | `references/pipelines/pl-e13390d8fa6d` | `main` |
+| Kind | Resource key | Name | Path | Branch |
+|---|---|---|---|---|
+| list *(portable)* | `list.sloane.service-renewals` | service-renewals | `references/lists/list-sloane-service-renewals` | `main` |
+| pipeline *(portable)* | `pipeline.sloane.service-renewal-workflow` | service-renewal-workflow | `references/pipelines/pipeline-sloane-service-renewal-workflow` | `main` |
+| workflow *(portable)* | `workflow.sloane.renew-a-household-service-personal` | Renew a household service (personal) | `references/workflows/workflow-sloane-renew-a-household-service-personal` | `main` |
 
-`registry.json` holds the same mapping as plain JSON, readable without fetching the
-submodules. It is generated — edit the persona's pipelines, lists, and commands in the
-product instead of editing this folder by hand.
+## Authoring graph (`workspace.json`)
+
+Generated. Do not edit by hand. Extra workflows and team agents live here so one clone
+reaches the whole graph. They are **not** cross-environment portable imports.
+
+| Kind | Id | Name | Path | Branch |
+|---|---|---|---|---|
+| — | _No extra workspace repositories._ | | | |
+
+Commit content in each child repository first, then **publish the workspace** so this
+Persona lock (gitlinks, fingerprints, and `workspace.json`) advances in one root commit.
