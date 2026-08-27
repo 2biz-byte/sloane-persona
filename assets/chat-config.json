@@ -27,7 +27,7 @@
         }
       ]
     },
-    "llmModel": "auto",
+    "llmModel": "69abd04d149e4e52a8912378",
     "webSearchEnabled": true,
     "chatImageUpload": {
       "enabled": true,
@@ -108,5 +108,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1787835386215
+  "updatedAt": 1787836194506
 }
