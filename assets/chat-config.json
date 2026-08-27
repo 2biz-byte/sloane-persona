@@ -53,7 +53,7 @@
       "label": "Call",
       "icon": "phone"
     },
-    "composioKeyId": "42ffe1e5-bf1c-4b79-a044-8eb0e72670e3",
+    "composioKeyId": "dde47dae-3405-480e-8da0-7bc6019020f6",
     "composioEnabledToolkitSlugs": [
       "gmail",
       "googlesheets"
@@ -108,5 +108,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1787833973754
+  "updatedAt": 1787834939919
 }
