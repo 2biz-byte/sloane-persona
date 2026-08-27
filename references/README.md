@@ -14,7 +14,7 @@ Private submodules need credentials that can read the linked repositories.
 
 | Kind | Name | Path | Branch |
 |------|------|------|--------|
-| — | _No linked repositories yet._ | | |
+| pipeline | service-renewal-workflow | `references/pipelines/pl-e13390d8fa6d` | `main` |
 
 `registry.json` holds the same mapping as plain JSON, readable without fetching the
 submodules. It is generated — edit the persona's pipelines, lists, and commands in the

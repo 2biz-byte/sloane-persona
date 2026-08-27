@@ -1,0 +1,4 @@
+[submodule "references/pipelines/pl-e13390d8fa6d"]
+	path = references/pipelines/pl-e13390d8fa6d
+	url = https://github.com/2biz-byte/sloane-service-renewal-pipeline.git
+	branch = main
