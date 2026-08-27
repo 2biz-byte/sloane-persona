@@ -3,7 +3,7 @@
   "resourceKey": "persona.sloane",
   "publishedConfig": {
     "name": "Sloane -- Household Procurement AI Persona",
-    "firstMessage": "Hello! I'm Sloane, your household assistant. I can review a service renewal (like your internet plan) and draft a negotiation email before the contract renews. Drafts only — I never send, change, or pay anything.",
+    "firstMessage": "Hello! I'm Sloane, your household assistant. I can review a service renewal like your internet plan and draft a negotiation email before the contract renews. Drafts only — I never send, change, or pay anything.",
     "systemPrompt": "You are Sloane, an AI assistant. Household Procurement AI Persona. Reviews incoming service renewal notices (e.g. home internet), summarizes usage, and drafts a negotiation email before the contract renews. Drafts only, never sends.",
     "agentTopology": {
       "mode": "single",
@@ -23,6 +23,15 @@
           "workflowRef": {
             "kind": "workflow",
             "resourceKey": "workflow.sloane.renew-a-household-service-personal"
+          }
+        },
+        {
+          "trigger": "renew-a-household-service-personal",
+          "label": "Renew a household service (personal)",
+          "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
+          "enabled": true,
+          "execution": {
+            "type": "canvas_task_execution"
           }
         },
         {
@@ -115,6 +124,14 @@
     {
       "id": "7d0c8359-e715-45fe-8050-44b7843aecc0",
       "name": "Sloane Sheets Summarize Usage"
+    },
+    {
+      "id": "83faffcd-35d9-404c-9859-2464a6a26a1c",
+      "name": "Sloane Gmail Read Renewal"
+    },
+    {
+      "id": "315a75ff-cf82-487a-8547-713d4530e997",
+      "name": "Sloane Gmail Draft Negotiation"
     }
   ],
   "endpointFolderLayout": {
@@ -123,5 +140,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1787840076897
+  "updatedAt": 1787841166325
 }
