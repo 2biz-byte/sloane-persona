@@ -1,29 +1,36 @@
 {
-  "schemaVersion": 1,
-  "pageId": "9beee179-c29d-4d19-9899-8964f57827a1",
-  "updatedAt": 1787828704151,
+  "schemaVersion": 2,
+  "updatedAt": 1787830418686,
   "repos": [
     {
-      "kind": "command",
-      "id": "6a90198a9334d064acf7c5de",
-      "slug": "6a90198a9334d064acf7c5de",
-      "displayName": "Renew a household service (personal)",
-      "path": "references/commands/6a90198a9334d064acf7c5de",
-      "url": "https://github.com/2biz-byte/sloane-renew-renewal-workflow.git",
+      "kind": "list",
+      "resourceKey": "list.sloane.service-renewals",
+      "displayName": "service-renewals",
+      "path": "references/lists/list-sloane-service-renewals",
+      "repositoryUrl": "https://github.com/2biz-byte/sloane-service-renewals-list.git",
       "branch": "main",
-      "headSha": "0cc7fe86ba66ea633423c5c76f8c793eac181d2e",
-      "linkedAt": 1787828704151
+      "assetPath": "assets/list.json",
+      "definitionFingerprint": "93cba2c4848f3c63381d77ea137a52d805bfcae74ab6606a2daa35d745379e1f"
     },
     {
       "kind": "pipeline",
-      "id": "pl_e13390d8fa6d",
-      "slug": "pl-e13390d8fa6d",
+      "resourceKey": "pipeline.sloane.service-renewal-workflow",
       "displayName": "service-renewal-workflow",
-      "path": "references/pipelines/pl-e13390d8fa6d",
-      "url": "https://github.com/2biz-byte/sloane-service-renewal-pipeline.git",
+      "path": "references/pipelines/pipeline-sloane-service-renewal-workflow",
+      "repositoryUrl": "https://github.com/2biz-byte/sloane-service-renewal-pipeline.git",
       "branch": "main",
-      "headSha": "13ee4ccf13748961217a5ea71cf22b4e373d6a7f",
-      "linkedAt": 1787828682437
+      "assetPath": "assets/pipeline.json",
+      "definitionFingerprint": "f590b888995086b712408bf5640d00e8e7268ff63bac0e17617e740335a9b846"
+    },
+    {
+      "kind": "workflow",
+      "resourceKey": "workflow.sloane.renew-a-household-service-personal",
+      "displayName": "Renew a household service (personal)",
+      "path": "references/workflows/workflow-sloane-renew-a-household-service-personal",
+      "repositoryUrl": "https://github.com/2biz-byte/sloane-renew-renewal-workflow.git",
+      "branch": "main",
+      "assetPath": "assets/workflow.json",
+      "definitionFingerprint": "f755aa055b3295041c0dd9e83025699c7cbced9cde2b2d3920ad5669aaf8c8d1"
     }
   ]
 }
