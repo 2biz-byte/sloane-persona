@@ -24,6 +24,15 @@
             "kind": "workflow",
             "resourceKey": "workflow.sloane.renew-a-household-service-personal"
           }
+        },
+        {
+          "trigger": "renew-a-household-service-personal",
+          "label": "Renew a household service (personal)",
+          "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
+          "enabled": true,
+          "execution": {
+            "type": "canvas_task_execution"
+          }
         }
       ]
     },
@@ -71,8 +80,8 @@
     "chatCommandOptions": {},
     "nativeConnectorIds": [],
     "mcpServerIds": [],
-    "avatarPreviewPosterUrl": "/assets/gabriel-twins/nora-banking-finance.png",
-    "avatarPreviewVideoUrl": "/assets/gabriel-twins/avatars/nora.mp4",
+    "avatarPreviewPosterUrl": null,
+    "avatarPreviewVideoUrl": null,
     "voiceProvider": "gemini",
     "geminiLiveModel": "gemini-3.1-flash-live-preview",
     "geminiLiveVoice": "Aoede",
@@ -114,5 +123,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1787839999179
+  "updatedAt": 1787840076897
 }
