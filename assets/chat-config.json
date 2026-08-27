@@ -12,7 +12,7 @@
           "trigger": "renew-a-household-service-personal",
           "label": "Renew a household service (personal)",
           "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
-          "enabled": false,
+          "enabled": true,
           "execution": {
             "type": "operator_action",
             "automationId": "9beee179-c29d-4d19-9899-8964f57827a1",
