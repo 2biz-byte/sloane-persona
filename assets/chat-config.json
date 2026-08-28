@@ -17,6 +17,10 @@
             "userPrompt": "Review my internet renewal and draft a negotiation email before the contract renews.",
             "expectedResult": "Renewal brief created with negotiation points and an email draft."
           },
+          "workflowRef": {
+            "kind": "workflow",
+            "resourceKey": "workflow.sloane.renew-a-household-service-personal"
+          },
           "execution": {
             "type": "canvas_task_execution",
             "canvas": {
