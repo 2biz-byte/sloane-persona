@@ -12,44 +12,24 @@
           "trigger": "renew-a-household-service-personal",
           "label": "Renew a household service (personal)",
           "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
-          "enabled": false,
+          "enabled": true,
           "execution": {
-            "type": "operator_action",
-            "workflowRef": {
-              "kind": "workflow",
-              "resourceKey": "workflow.sloane.renew-a-household-service-personal"
+            "type": "canvas_task_execution",
+            "canvas": {
+              "enabled": true,
+              "scope": "invocation",
+              "runtime": "task_execution",
+              "blueprintRef": "inline",
+              "visibility": "published",
+              "humanApproval": { "enabled": true },
+              "artifactAllowlist": ["text_document"],
+              "playbook": {
+                "captureOnSuccess": true,
+                "allowSave": true,
+                "allowReplay": true
+              },
+              "taskTypes": []
             }
-          },
-          "workflowRef": {
-            "kind": "workflow",
-            "resourceKey": "workflow.sloane.renew-a-household-service-personal"
-          }
-        },
-        {
-          "trigger": "renew-a-household-service-personal",
-          "label": "Renew a household service (personal)",
-          "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
-          "enabled": true,
-          "execution": {
-            "type": "canvas_task_execution"
-          }
-        },
-        {
-          "trigger": "renew-a-household-service-personal",
-          "label": "Renew a household service (personal)",
-          "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
-          "enabled": true,
-          "execution": {
-            "type": "canvas_task_execution"
-          }
-        },
-        {
-          "trigger": "renew-a-household-service-personal",
-          "label": "Renew a household service (personal)",
-          "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
-          "enabled": true,
-          "execution": {
-            "type": "canvas_task_execution"
           }
         }
       ]
@@ -98,8 +78,8 @@
     "chatCommandOptions": {},
     "nativeConnectorIds": [],
     "mcpServerIds": [],
-    "avatarPreviewPosterUrl": null,
-    "avatarPreviewVideoUrl": null,
+    "avatarPreviewPosterUrl": "/assets/gabriel-twins/nora-banking-finance.png",
+    "avatarPreviewVideoUrl": "/assets/gabriel-twins/avatars/nora.mp4",
     "voiceProvider": "gemini",
     "geminiLiveModel": "gemini-3.1-flash-live-preview",
     "geminiLiveVoice": "Aoede",
@@ -117,7 +97,7 @@
     "title": "Sloane -- Household Procurement AI Persona",
     "description": "Household Procurement AI Persona. Reviews incoming service renewal notices (e.g. home internet), summarizes usage, and drafts a negotiation email before the contract renews. Drafts only, never sends.",
     "longDescription": "Household Procurement AI Persona. Reviews incoming service renewal notices (e.g. home internet), summarizes usage, and drafts a negotiation email before the contract renews. Drafts only, never sends.",
-    "profilePicture": null,
+    "profilePicture": "/assets/gabriel-twins/nora-banking-finance.png",
     "bannerImage": null,
     "bannerType": null,
     "tags": [
