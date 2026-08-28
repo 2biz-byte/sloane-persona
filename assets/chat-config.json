@@ -144,7 +144,7 @@
             "prompt": "Ask what the user wants /renew-a-household-service-personal to create, gather the required details, read them back, and confirm before starting."
           },
           "launchPolicy": {
-            "invocationPolicy": "manual",
+            "invocationPolicy": "every_load",
             "commandVersion": "1",
             "firstUseCompletion": "execution_started"
           },
@@ -268,5 +268,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1787926607508
+  "updatedAt": 1787926822194
 }
