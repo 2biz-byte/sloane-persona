@@ -212,7 +212,25 @@
       "captureMode": "automatic"
     },
     "avatarPreviewPosterUrl": "/assets/gabriel-twins/nora-banking-finance.png",
-    "avatarPreviewVideoUrl": "/assets/gabriel-twins/avatars/nora.mp4"
+    "avatarPreviewVideoUrl": "/assets/gabriel-twins/avatars/nora.mp4",
+    "multimodalUnderstanding": {
+      "image": {
+        "enabled": true,
+        "provider": "google"
+      },
+      "video": {
+        "enabled": false,
+        "provider": "google"
+      },
+      "audio": {
+        "enabled": false,
+        "provider": "google"
+      },
+      "file": {
+        "enabled": false,
+        "provider": "google"
+      }
+    }
   },
   "pageProfile": {
     "title": "Sloane -- Household Procurement AI Persona",
@@ -250,5 +268,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1787926127543
+  "updatedAt": 1787926607508
 }
