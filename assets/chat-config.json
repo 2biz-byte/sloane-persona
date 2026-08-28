@@ -13,6 +13,10 @@
           "label": "Renew a household service (personal)",
           "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
           "enabled": true,
+          "presentation": {
+            "userPrompt": "Review my internet renewal and draft a negotiation email before the contract renews.",
+            "expectedResult": "Renewal brief created with negotiation points and an email draft."
+          },
           "execution": {
             "type": "canvas_task_execution",
             "canvas": {
@@ -35,8 +39,8 @@
               "taskTypes": [
                 {
                   "id": "read-contract",
-                  "label": "Gmail — read renewal notice",
-                  "description": "Read the home-internet renewal notice and current contract terms via Gmail. For the mock fallback path, use the seeded SLOANE-RENEW-001 inquiry: provider Northline Fiber, plan Home Gigabit, current $59.99/mo, proposed $89.99/mo (50% hike), contract end 2026-09-14, promo note 'First-year promo ending'. Clearly label the source as mock fallback when live Gmail has no match. Drafts only — never send or modify email.",
+                  "label": "Gmail — read_contract",
+                  "description": "Gmail.read_contract — Read the home-internet renewal notice and current contract terms. For the mock fallback path, use the seeded SLOANE-RENEW-001 inquiry: provider Northline Fiber, plan Home Gigabit, current $59.99/mo, proposed $89.99/mo (50% hike), contract end 2026-09-14, promo note 'First-year rate ending'. Clearly label the source as mock fallback when live Gmail has no match. Drafts only — never send or modify email.",
                   "artifactType": "text_document",
                   "artifactPolicy": "none",
                   "requiresApproval": true,
@@ -56,8 +60,8 @@
                 },
                 {
                   "id": "summarize-usage",
-                  "label": "Sheets — summarize usage",
-                  "description": "Summarize monthly spend and usage from Sheets. For the mock fallback path, use the exact seeded SLOANE-RENEW-001 usage history and competitor offer (competitor $64.99/mo for a comparable plan). State it is using the seeded values unless a live Sheets connector is explicitly selected and approved. Drafts only — never write to Sheets.",
+                  "label": "Sheets — summarize_usage",
+                  "description": "Sheets.summarize_usage — Summarize monthly spend and usage. For the mock fallback path, use the exact seeded SLOANE-RENEW-001 usage history (six months, average ~437 GB at flat $59.99) and competitor offer ($64.99/mo for a comparable plan). State it is using the seeded values unless a live Sheets connector is explicitly selected and approved. Drafts only — never write to Sheets.",
                   "artifactType": "text_document",
                   "artifactPolicy": "none",
                   "dependsOn": ["read-contract"],
@@ -78,8 +82,8 @@
                 },
                 {
                   "id": "draft-email",
-                  "label": "Gmail — draft negotiation email",
-                  "description": "Draft the negotiation email for SLOANE-RENEW-001 with the contract end, hike %, proposed monthly, and the $64.99 competitor talking point. Stay at usage_summarized for review until approved. Create a Gmail draft only — never send. Improve revises the draft without sending.",
+                  "label": "Gmail — draft_email",
+                  "description": "Gmail.draft_email — Draft the negotiation email for SLOANE-RENEW-001 with the contract end 2026-09-14, hike %, proposed monthly $89.99, and the $64.99 competitor talking point. Stay at usage_summarized for review until approved. Create a Gmail draft only — never send. Improve revises the draft without sending (revise_draft).",
                   "artifactType": "text_document",
                   "artifactPolicy": "none",
                   "dependsOn": ["summarize-usage"],
@@ -97,7 +101,7 @@
                     "operation": "advance",
                     "waitForCompletion": true,
                     "recovery": {
-                      "improveTransitionId": "improve_draft",
+                      "improveTransitionId": "revise_draft",
                       "approvalLabels": {
                         "improve": "Improve…"
                       }
@@ -176,8 +180,6 @@
     "chatCommandOptions": {},
     "nativeConnectorIds": [],
     "mcpServerIds": [],
-    "avatarPreviewPosterUrl": "/assets/gabriel-twins/nora-banking-finance.png",
-    "avatarPreviewVideoUrl": "/assets/gabriel-twins/avatars/nora.mp4",
     "voiceProvider": "gemini",
     "geminiLiveModel": "gemini-3.1-flash-live-preview",
     "geminiLiveVoice": "Aoede",
