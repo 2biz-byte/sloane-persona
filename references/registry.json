@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updatedAt": 1787928824305,
+  "updatedAt": 1787931948193,
   "repos": [
     {
       "kind": "list",
@@ -11,7 +11,7 @@
       "branch": "main",
       "assetPath": "assets/list.json",
       "definitionFingerprint": "33ee7c263e9187793ef23ea287d1e24d1c7a8aa85e3d904033872576e1ff155c",
-      "revision": "cabecc99a37f3306c1164a10503da2b915afd74b"
+      "revision": "c60f34657eb7320d9fcc17bd7c664b3c9d1d22ee"
     },
     {
       "kind": "pipeline",
