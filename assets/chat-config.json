@@ -21,7 +21,7 @@
             "type": "operator_action",
             "workflowRef": {
               "kind": "workflow",
-              "resourceKey": "workflow.sloane-household-procurement-ai-persona.renew-a-household-service-personal"
+              "resourceKey": "workflow.sloane.renew-a-household-service-personal"
             }
           },
           "voiceAgent": {
@@ -113,7 +113,9 @@
         "enabled": false,
         "provider": "google"
       }
-    }
+    },
+    "avatarPreviewPosterUrl": "/assets/gabriel-twins/nora-banking-finance.png",
+    "avatarPreviewVideoUrl": "/assets/gabriel-twins/avatars/nora.mp4"
   },
   "pageProfile": {
     "title": "Sloane -- Household Procurement AI Persona",
@@ -151,5 +153,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1787926900278
+  "updatedAt": 1787932729935
 }
