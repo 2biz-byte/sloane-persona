@@ -18,7 +18,7 @@
             "expectedResult": "Renewal brief created with negotiation points and an email draft."
           },
           "execution": {
-            "type": "canvas_task_execution",
+            "type": "operator_action",
             "canvas": {
               "enabled": true,
               "scope": "invocation",
@@ -137,6 +137,10 @@
                   }
                 }
               ]
+            },
+            "workflowRef": {
+              "kind": "workflow",
+              "resourceKey": "workflow.sloane.renew-a-household-service-personal"
             }
           },
           "voiceAgent": {
@@ -268,5 +272,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1787929095097
+  "updatedAt": 1787929100619
 }
