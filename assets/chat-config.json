@@ -32,7 +32,101 @@
                 "allowSave": true,
                 "allowReplay": true
               },
-              "taskTypes": []
+              "taskTypes": [
+                {
+                  "id": "read-contract",
+                  "label": "Gmail — read renewal notice",
+                  "description": "Read the home-internet renewal notice and current contract terms via Gmail. For the mock fallback path, use the seeded SLOANE-RENEW-001 inquiry: provider Northline Fiber, plan Home Gigabit, current $59.99/mo, proposed $89.99/mo (50% hike), contract end 2026-09-14, promo note 'First-year promo ending'. Clearly label the source as mock fallback when live Gmail has no match. Drafts only — never send or modify email.",
+                  "artifactType": "text_document",
+                  "artifactPolicy": "none",
+                  "requiresApproval": true,
+                  "autoApprove": false,
+                  "execution": {
+                    "type": "pipeline_transition",
+                    "pipelineRef": {
+                      "kind": "pipeline",
+                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
+                    },
+                    "transitionId": "to_contract_read",
+                    "expectedFromStageId": "intake",
+                    "expectedToStageId": "contract_read",
+                    "operation": "start",
+                    "waitForCompletion": true
+                  }
+                },
+                {
+                  "id": "summarize-usage",
+                  "label": "Sheets — summarize usage",
+                  "description": "Summarize monthly spend and usage from Sheets. For the mock fallback path, use the exact seeded SLOANE-RENEW-001 usage history and competitor offer (competitor $64.99/mo for a comparable plan). State it is using the seeded values unless a live Sheets connector is explicitly selected and approved. Drafts only — never write to Sheets.",
+                  "artifactType": "text_document",
+                  "artifactPolicy": "none",
+                  "dependsOn": ["read-contract"],
+                  "requiresApproval": true,
+                  "autoApprove": false,
+                  "execution": {
+                    "type": "pipeline_transition",
+                    "pipelineRef": {
+                      "kind": "pipeline",
+                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
+                    },
+                    "transitionId": "to_usage_summarized",
+                    "expectedFromStageId": "contract_read",
+                    "expectedToStageId": "usage_summarized",
+                    "operation": "advance",
+                    "waitForCompletion": true
+                  }
+                },
+                {
+                  "id": "draft-email",
+                  "label": "Gmail — draft negotiation email",
+                  "description": "Draft the negotiation email for SLOANE-RENEW-001 with the contract end, hike %, proposed monthly, and the $64.99 competitor talking point. Stay at usage_summarized for review until approved. Create a Gmail draft only — never send. Improve revises the draft without sending.",
+                  "artifactType": "text_document",
+                  "artifactPolicy": "none",
+                  "dependsOn": ["summarize-usage"],
+                  "requiresApproval": true,
+                  "autoApprove": false,
+                  "execution": {
+                    "type": "pipeline_transition",
+                    "pipelineRef": {
+                      "kind": "pipeline",
+                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
+                    },
+                    "transitionId": "draft_email",
+                    "expectedFromStageId": "usage_summarized",
+                    "expectedToStageId": "usage_summarized",
+                    "operation": "advance",
+                    "waitForCompletion": true,
+                    "recovery": {
+                      "improveTransitionId": "improve_draft",
+                      "approvalLabels": {
+                        "improve": "Improve…"
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": "mark-draft-ready",
+                  "label": "Mark draft ready",
+                  "description": "After the approved negotiation draft, advance the case from usage_summarized to draft_ready. No email is sent and no plan is changed.",
+                  "artifactType": "text_document",
+                  "artifactPolicy": "none",
+                  "dependsOn": ["draft-email"],
+                  "requiresApproval": false,
+                  "autoApprove": true,
+                  "execution": {
+                    "type": "pipeline_transition",
+                    "pipelineRef": {
+                      "kind": "pipeline",
+                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
+                    },
+                    "transitionId": "mark_draft_ready",
+                    "expectedFromStageId": "usage_summarized",
+                    "expectedToStageId": "draft_ready",
+                    "operation": "advance",
+                    "waitForCompletion": true
+                  }
+                }
+              ]
             }
           }
         }
