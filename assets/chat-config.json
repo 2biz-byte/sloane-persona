@@ -35,34 +35,6 @@
               "taskTypes": []
             }
           }
-        },
-        {
-          "trigger": "renew-a-household-service-personal",
-          "label": "Renew a household service (personal)",
-          "description": "Review a household service renewal (e.g. home internet) and draft a negotiation email before the contract renews. Drafts only, never sends.",
-          "enabled": true,
-          "execution": {
-            "type": "canvas_task_execution",
-            "canvas": {
-              "enabled": true,
-              "scope": "invocation",
-              "runtime": "task_execution",
-              "blueprintRef": "inline",
-              "visibility": "published",
-              "humanApproval": {
-                "enabled": true
-              },
-              "artifactAllowlist": [
-                "text_document"
-              ],
-              "playbook": {
-                "captureOnSuccess": true,
-                "allowSave": true,
-                "allowReplay": true
-              },
-              "taskTypes": []
-            }
-          }
         }
       ]
     },
