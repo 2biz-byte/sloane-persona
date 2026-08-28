@@ -18,125 +18,10 @@
             "expectedResult": "Renewal brief created with negotiation points and an email draft."
           },
           "execution": {
-            "type": "canvas_task_execution",
-            "canvas": {
-              "enabled": true,
-              "scope": "invocation",
-              "runtime": "task_execution",
-              "blueprintRef": "inline",
-              "visibility": "published",
-              "humanApproval": {
-                "enabled": true
-              },
-              "artifactAllowlist": [
-                "text_document"
-              ],
-              "playbook": {
-                "captureOnSuccess": true,
-                "allowSave": true,
-                "allowReplay": true
-              },
-              "taskTypes": [
-                {
-                  "id": "read-contract",
-                  "label": "Gmail — read_contract",
-                  "description": "Gmail.read_contract — Read the home-internet renewal notice and current contract terms. For the mock fallback path, use the seeded SLOANE-RENEW-001 inquiry: provider Northline Fiber, plan Home Gigabit, current $59.99/mo, proposed $89.99/mo (50% hike), contract end 2026-09-14, promo note 'First-year rate ending'. Clearly label the source as mock fallback when live Gmail has no match. Drafts only — never send or modify email.",
-                  "artifactType": "text_document",
-                  "artifactPolicy": "none",
-                  "requiresApproval": true,
-                  "autoApprove": false,
-                  "execution": {
-                    "type": "pipeline_transition",
-                    "pipelineRef": {
-                      "kind": "pipeline",
-                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
-                    },
-                    "transitionId": "to_contract_read",
-                    "expectedFromStageId": "intake",
-                    "expectedToStageId": "contract_read",
-                    "operation": "start",
-                    "waitForCompletion": true
-                  }
-                },
-                {
-                  "id": "summarize-usage",
-                  "label": "Sheets — summarize_usage",
-                  "description": "Sheets.summarize_usage — Summarize monthly spend and usage. For the mock fallback path, use the exact seeded SLOANE-RENEW-001 usage history (six months, average ~437 GB at flat $59.99) and competitor offer ($64.99/mo for a comparable plan). State it is using the seeded values unless a live Sheets connector is explicitly selected and approved. Drafts only — never write to Sheets.",
-                  "artifactType": "text_document",
-                  "artifactPolicy": "none",
-                  "dependsOn": [
-                    "read-contract"
-                  ],
-                  "requiresApproval": true,
-                  "autoApprove": false,
-                  "execution": {
-                    "type": "pipeline_transition",
-                    "pipelineRef": {
-                      "kind": "pipeline",
-                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
-                    },
-                    "transitionId": "to_usage_summarized",
-                    "expectedFromStageId": "contract_read",
-                    "expectedToStageId": "usage_summarized",
-                    "operation": "advance",
-                    "waitForCompletion": true
-                  }
-                },
-                {
-                  "id": "draft-email",
-                  "label": "Gmail — draft_email",
-                  "description": "Gmail.draft_email — Draft the negotiation email for SLOANE-RENEW-001 with the contract end 2026-09-14, hike %, proposed monthly $89.99, and the $64.99 competitor talking point. Stay at usage_summarized for review until approved. Create a Gmail draft only — never send. Improve revises the draft without sending (revise_draft).",
-                  "artifactType": "text_document",
-                  "artifactPolicy": "none",
-                  "dependsOn": [
-                    "summarize-usage"
-                  ],
-                  "requiresApproval": true,
-                  "autoApprove": false,
-                  "execution": {
-                    "type": "pipeline_transition",
-                    "pipelineRef": {
-                      "kind": "pipeline",
-                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
-                    },
-                    "transitionId": "draft_email",
-                    "expectedFromStageId": "usage_summarized",
-                    "expectedToStageId": "usage_summarized",
-                    "operation": "advance",
-                    "waitForCompletion": true,
-                    "recovery": {
-                      "improveTransitionId": "revise_draft",
-                      "approvalLabels": {
-                        "improve": "Improve…"
-                      }
-                    }
-                  }
-                },
-                {
-                  "id": "mark-draft-ready",
-                  "label": "Mark draft ready",
-                  "description": "After the approved negotiation draft, advance the case from usage_summarized to draft_ready. No email is sent and no plan is changed.",
-                  "artifactType": "text_document",
-                  "artifactPolicy": "none",
-                  "dependsOn": [
-                    "draft-email"
-                  ],
-                  "requiresApproval": false,
-                  "autoApprove": true,
-                  "execution": {
-                    "type": "pipeline_transition",
-                    "pipelineRef": {
-                      "kind": "pipeline",
-                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
-                    },
-                    "transitionId": "mark_draft_ready",
-                    "expectedFromStageId": "usage_summarized",
-                    "expectedToStageId": "draft_ready",
-                    "operation": "advance",
-                    "waitForCompletion": true
-                  }
-                }
-              ]
+            "type": "operator_action",
+            "workflowRef": {
+              "kind": "workflow",
+              "resourceKey": "workflow.sloane.renew-a-household-service-personal"
             }
           },
           "voiceAgent": {
@@ -211,8 +96,6 @@
       "provider": "inherit",
       "captureMode": "automatic"
     },
-    "avatarPreviewPosterUrl": "/assets/gabriel-twins/nora-banking-finance.png",
-    "avatarPreviewVideoUrl": "/assets/gabriel-twins/avatars/nora.mp4",
     "multimodalUnderstanding": {
       "image": {
         "enabled": true,
