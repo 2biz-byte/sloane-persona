@@ -113,21 +113,47 @@ automatic command is allowed per persona. The command must use the standard
 submission tools, acquisition recipes, or Canvas task definitions here.
 
 Existing-case identity is also outside Persona configuration. Do not add a locator
-column, URL-normalization rule, or `existingCasePolicy` object to
-`assets/chat-config.json` or the slash-command details UI. The command's workflow
-Canvas references a stable `existingCasePolicyId`; the selected Pipeline owns and
-configures that policy under **Pipeline → Manage → Config → Existing-case detection**.
-Changing `form_url` to another resource locator therefore belongs to the Pipeline
-and its bound List schema, not to `PersonaOperatorSlashCommandsPanel`.
+column, URL-normalization rule, `existingCasePolicy` object, or questionnaire
+prefill toggle to `assets/chat-config.json` or the slash-command details UI. The
+command's workflow Canvas references a stable `existingCasePolicyId`; the selected
+Pipeline owns and configures that policy under **Pipeline → Manage → Config →
+Existing-case detection**. Changing `form_url` to another resource locator
+therefore belongs to the Pipeline and its bound List schema, not to
+`PersonaOperatorSlashCommandsPanel`.
 
-Persona Chat apps configured in the Identity/Reach editor may be reused by a
-workflow-authored Canvas task for `responseCollection.mode: "channels_only"`.
-That runtime use is runner-specific: it requires the authenticated runner's
-linked external identity and sends a single-use questionnaire URL scoped to one
-Canvas decision. It must not inject the questionnaire or its answers into the
-Persona's general chat conversation. The channel list belongs to the workflow
-task, while `chat-config.json` continues to own only the normal Chat app
-configuration and slash-command registration.
+### Canvas questionnaires (`channels_only`)
+
+Form-fill slash commands (`/fill`, `/capture-and-fill`, and custom Canvas Collect
+tasks) pause on a `channels_only` questionnaire. Runtime — not this file —
+presents **Answer here**, **Talk**, and **Chat**:
+
+- **Answer here** is the trusted inline form.
+- **Talk** is `in_app_voice` when the workflow lists it in `allowedChannels`.
+- **Chat** is `in_app_chat`: Canvas starts a new session titled **Questionnaire**,
+  closes the Canvas sheet, and uses a questionnaire-only agent (trusted questions
+  plus preview/answer tools, no persona tools). After answers, Canvas reopens for
+  Confirm and continue. This is not general Persona chat and must not be
+  registered as a slash command, Chat app, or `allowedChannels` value.
+
+Persona Chat apps configured in the Identity/Reach editor may still be reused as
+**runner channels** for the same Collect task. That use is runner-specific: it
+requires the authenticated runner's linked external identity and sends a
+single-use questionnaire URL scoped to one Canvas decision. It must not inject
+the questionnaire or its answers into the Persona's general chat conversation.
+The runner channel list belongs to the workflow task (`allowedChannels`:
+`in_app_voice`, `phone`, `email`, `persona_channels`). `chat-config.json`
+continues to own only the normal Chat app configuration and slash-command
+registration.
+
+Questionnaire draft prefill is also runtime. When Collect starts, Canvas
+suggests answers from, in order: a prior List row for this form (Pipeline
+`existingCasePolicies`, including a silent lookup), the signed-in user's
+profile, then conversational memory when `publishedConfig.memoryConfig.provider`
+is not `none`. Low-confidence memory never writes into the form. Leave
+`memoryConfig` as `inherit` or an explicit Honcho/Mem0 provider for form-fill
+personas unless the user wants memory off. Do not author prefill mappings,
+profile field lists, or Honcho queries in this repository — see
+**workflow-builder** Rule 4 and **pipeline-builder** Collect.
 
 ## Using this skill in coding agents
 
@@ -418,7 +444,7 @@ Do not add or edit `chatEmbedConfig` in `assets/chat-config.json`. It is ignored
 1. Start from the page’s `publishedConfig` document (deep-cloned).
 2. If draft `vapiAssistantConfig.outputIntegration.outputTabViewerDefaultsByUserId` exists, copy it onto `publishedConfig.outputTabViewerDefaultsByUserId`.
 3. If draft has `webSearchEnabled`, `xSearchEnabled`, or `xSearchAllowedHandles`, copy those keys onto `publishedConfig` so voice/search flags round-trip in git.
-4. If draft has `composioEnabledToolkitSlugs`, `formUi`, `chatImageUpload`, `qualityControlConfig`, or `agentTopology`, copy those keys onto `publishedConfig` so Composio toolkit allowlists, chat UI, the Quality opt-in, and agent topology round-trip in git.
+4. If draft has `composioEnabledToolkitSlugs`, `formUi`, `chatImageUpload`, `qualityControlConfig`, `agentTopology`, `chatCommandSettings`, `chatCommandModels`, or `multimodalUnderstanding`, copy those keys onto `publishedConfig` so Composio toolkit allowlists, chat UI, Quality opt-in, agent topology, generation commands, and input-understanding providers round-trip in git.
 5. `computerConfig` and `emailConfig` are stored directly on the page and always round-trip in `publishedConfig` when present.
 
 When a coding agent **edits git**, treat `publishedConfig` as the same shape the product uses after publish. The authoritative TypeScript interface is **`DigitalTwinConfig`** (`configureDigitalTwin.types.ts`). Below: **every field name** on that interface with a one-line meaning (optional fields marked by “optional” in prose).
@@ -492,11 +518,12 @@ When a coding agent **edits git**, treat `publishedConfig` as the same shape the
 | `xaiProviderId` | xAI File Search provider id. |
 | `mem0ProviderId` | mem0 memory provider id. |
 | `jarvisMode` | Optional `{ "enabled": boolean, "localComputerControl": boolean, "preferredTransport": "runner-choice" \| "realtime" \| "local-hybrid" }`. Both capability switches default off. This is local Gabriel Desktop control and is independent of `computerConfig`. |
-| `memoryConfig` | Optional `{ "provider": "inherit" \| "honcho" \| "mem0" \| "none", "providerId"?: string, "captureMode": "automatic" \| "explicit" }`. `providerId` is a safe saved-provider reference and is valid only for explicit Honcho or Mem0. |
+| `memoryConfig` | Optional `{ "provider": "inherit" \| "honcho" \| "mem0" \| "none", "providerId"?: string, "captureMode": "automatic" \| "explicit" }`. `providerId` is a safe saved-provider reference and is valid only for explicit Honcho or Mem0. Canvas `channels_only` questionnaires also read this at Collect time (unless `none`) to suggest answers; they never auto-submit those drafts. |
 | `sandboxProviderId` | E2B sandbox provider id. |
-| `chatCommandSettings` | Which slash-commands / tools are exposed in chat UI. Keys: `image`, `video`, `audio`, `search`, `deepsearch`, `deepresult`, `skillRun`; each value is `boolean`. Default for all keys is `false`. |
+| `chatCommandSettings` | Which **generation** slash-commands / tools are exposed in chat UI. Keys: `image`, `video`, `audio`, `search`, `deepsearch`, `deepresult`, `skillRun`; each value is `boolean`. Default for all keys is `false`. This does **not** control input understanding. |
 | `chatCommandModels` | Per-command model overrides: `Partial<Record<ChatCommandKey, string>>`. Same keys as `chatCommandSettings`; value is a model id string. Set per-tool in the Agents column. Takes precedence over the global `llmModel` for that command. |
 | `chatCommandOptions` | Per-command extra options: `Partial<Record<ChatCommandKey, Record<string, unknown>>>`. Arbitrary key-value config per command (e.g. `video.durationSeconds`, `video.size`). Also set per-tool in the Agents column. |
+| `multimodalUnderstanding` | Independent **input** capabilities. Shape: `{ image, video, audio, file }` each `{ enabled: boolean, provider: "google" \| "openrouter", modelId?: string }`. Defaults when omitted: image enabled, video/audio/file disabled, every capability preselects `google`. For `google`, `modelId` is an optional saved Gemini credential id shared across image, video, audio, and file (same store as Talk / File Search) — omit it to reuse `geminiLiveProviderId`, then `geminiProviderId`, then the system default Gemini API key. For `openrouter`, `modelId` is an opaque custom/gateway model reference. Never store API keys here. `/capture-and-fill` schema extraction uses Image Understanding; producing the filled image remains image generation. |
 
 #### Chat UI, forms, and agents
 | Field | Purpose |

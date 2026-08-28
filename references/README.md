@@ -1,30 +1,26 @@
 # AI Persona References
 
 This folder is a **depth-1 composition workspace**. Every linked repository is a git
-submodule of this Persona â€” never a submodule of another submodule.
+submodule of this Persona — never a submodule of another submodule.
 
 ```bash
 git submodule update --init
 ```
 
-## Portable bundle (`registry.json`)
+Private submodules need credentials that can read the linked repositories.
 
-Import materializes one Workflow per distinct command workflowRef, plus exactly one Pipeline and one List.
+## Layout
 
-| Kind | Resource key | Name | Path | Branch |
-|---|---|---|---|---|
-| list *(portable)* | `list.sloane-household-procurement-ai-persona.service-renewals` | service-renewals | `references/lists/list-sloane-service-renewals` | `main` |
-| pipeline *(portable)* | `pipeline.sloane-household-procurement-ai-persona.service-renewal-workflow` | service-renewal-workflow | `references/pipelines/pipeline-sloane-service-renewal-workflow` | `main` |
-| workflow *(portable)* | `workflow.sloane-household-procurement-ai-persona.renew-a-household-service-personal` | Renew a household service (personal) | `references/workflows/workflow-sloane-renew-a-household-service-personal` | `main` |
+```text
+references/registry.json        ← portable: distinct Workflows + one Pipeline + one List
+references/workspace.json       ← generated authoring graph (ignored by import)
+references/pipelines/<key>/     ← submodule: pipeline-builder repo
+references/lists/<key>/         ← submodule: list-builder repo
+references/workflows/<key>/     ← submodule: workflow-builder repo (once per remote)
+references/team-agents/<key>/   ← submodule: git-bound team agents only
+```
 
-## Authoring graph (`workspace.json`)
-
-Generated. Do not edit by hand. Extra workflows and team agents live here so one clone
-reaches the whole graph. They are **not** cross-environment portable imports.
-
-| Kind | Id | Name | Path | Branch |
-|---|---|---|---|---|
-| â€” | _No extra workspace repositories._ | | | |
-
-Commit content in each child repository first, then **publish the workspace** so this
-Persona lock (gitlinks, fingerprints, and `workspace.json`) advances in one root commit.
+`registry.json` is the portable bundle. `workspace.json` is generated on **workspace
+publish** — do not edit it by hand, and do not add `team_agent` rows to the portable
+registry. Commit content in each child repository first, then publish so this Persona's
+lock advances in one root commit.

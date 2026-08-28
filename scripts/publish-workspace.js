@@ -174,7 +174,8 @@ function normalizeRepoRelativePath({ value, label }) {
 }
 
 function isBuiltin({ value }) {
-  return String(value || '').trim().toLowerCase().startsWith('schema-form:');
+  const endpoint = String(value || '').trim().toLowerCase();
+  return endpoint.startsWith('schema-form:') || endpoint.startsWith('image-fill:');
 }
 
 function toReferenceSlug({ value }) {
