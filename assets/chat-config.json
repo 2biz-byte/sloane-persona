@@ -35,7 +35,7 @@
           },
           "workflowRef": {
             "kind": "workflow",
-            "resourceKey": "workflow.sloane-household-procurement-ai-persona.renew-a-household-service-personal"
+            "resourceKey": "workflow.sloane.renew-a-household-service-personal"
           }
         }
       ]

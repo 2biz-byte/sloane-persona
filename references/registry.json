@@ -26,14 +26,14 @@
     },
     {
       "kind": "workflow",
-      "resourceKey": "workflow.sloane-household-procurement-ai-persona.renew-a-household-service-personal",
-      "displayName": "Renew a household service (personal)",
-      "path": "references/workflows/workflow-sloane-renew-a-household-service-personal",
+    "resourceKey": "workflow.sloane.renew-a-household-service-personal",
+    "displayName": "Renew a household service (personal)",
+    "path": "references/workflows/workflow-sloane-renew-a-household-service-personal",
       "repositoryUrl": "https://github.com/2biz-byte/sloane-renew-renewal-workflow.git",
       "branch": "main",
       "assetPath": "assets/workflow.json",
-      "definitionFingerprint": "8459b35dbda852a25f60d3f41aac07748cd70d24627f4196c429e1bfa5da7234",
-      "revision": "f18723bd8fd8ea66827750bf49b83ae70f982e0a"
+  "definitionFingerprint": "8459b35dbda852a25f60d3f41aac07748cd70d24627f4196c429e1bfa5da7234",
+  "revision": "58e1ec7b4edcfc0cfc3c7d733e29250ba8f88f36"
     }
   ]
 }
