@@ -19,7 +19,7 @@
           },
           "workflowRef": {
             "kind": "workflow",
-            "resourceKey": "workflow.sloane-household-procurement-ai-persona.renew-a-household-service-personal"
+            "resourceKey": "workflow.sloane.renew-a-household-service-personal"
           },
           "execution": {
             "type": "canvas_task_execution",
@@ -53,7 +53,7 @@
                     "type": "pipeline_transition",
                     "pipelineRef": {
                       "kind": "pipeline",
-                      "resourceKey": "pipeline.sloane-household-procurement-ai-persona.service-renewal-workflow"
+                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
                     },
                     "transitionId": "to_contract_read",
                     "expectedFromStageId": "intake",
@@ -75,7 +75,7 @@
                     "type": "pipeline_transition",
                     "pipelineRef": {
                       "kind": "pipeline",
-                      "resourceKey": "pipeline.sloane-household-procurement-ai-persona.service-renewal-workflow"
+                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
                     },
                     "transitionId": "to_usage_summarized",
                     "expectedFromStageId": "contract_read",
@@ -97,7 +97,7 @@
                     "type": "pipeline_transition",
                     "pipelineRef": {
                       "kind": "pipeline",
-                      "resourceKey": "pipeline.sloane-household-procurement-ai-persona.service-renewal-workflow"
+                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
                     },
                     "transitionId": "draft_email",
                     "expectedFromStageId": "usage_summarized",
@@ -125,7 +125,7 @@
                     "type": "pipeline_transition",
                     "pipelineRef": {
                       "kind": "pipeline",
-                      "resourceKey": "pipeline.sloane-household-procurement-ai-persona.service-renewal-workflow"
+                      "resourceKey": "pipeline.sloane.service-renewal-workflow"
                     },
                     "transitionId": "mark_draft_ready",
                     "expectedFromStageId": "usage_summarized",
