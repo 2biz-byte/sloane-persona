@@ -4,7 +4,7 @@
   "repos": [
     {
       "kind": "list",
-      "resourceKey": "list.sloane.service-renewals",
+      "resourceKey": "list.sloane-household-procurement-ai-persona.service-renewals",
       "displayName": "service-renewals",
       "path": "references/lists/list-sloane-service-renewals",
       "repositoryUrl": "https://github.com/2biz-byte/sloane-service-renewals-list.git",
@@ -15,7 +15,7 @@
     },
     {
       "kind": "pipeline",
-      "resourceKey": "pipeline.sloane.service-renewal-workflow",
+      "resourceKey": "pipeline.sloane-household-procurement-ai-persona.service-renewal-workflow",
       "displayName": "service-renewal-workflow",
       "path": "references/pipelines/pipeline-sloane-service-renewal-workflow",
       "repositoryUrl": "https://github.com/2biz-byte/sloane-service-renewal-pipeline.git",
@@ -26,7 +26,7 @@
     },
     {
       "kind": "workflow",
-      "resourceKey": "workflow.sloane.renew-a-household-service-personal",
+      "resourceKey": "workflow.sloane-household-procurement-ai-persona.renew-a-household-service-personal",
       "displayName": "Renew a household service (personal)",
       "path": "references/workflows/workflow-sloane-renew-a-household-service-personal",
       "repositoryUrl": "https://github.com/2biz-byte/sloane-renew-renewal-workflow.git",

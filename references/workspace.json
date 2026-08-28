@@ -3,7 +3,7 @@
   "updatedAt": 1787830932201,
   "nodes": [
     {
-      "id": "list:list.sloane.service-renewals",
+      "id": "list:list.sloane-household-procurement-ai-persona.service-renewals",
       "kind": "list",
       "displayName": "service-renewals",
       "path": "references/lists/list-sloane-service-renewals",
@@ -14,13 +14,13 @@
         "assets/list.json"
       ],
       "portable": {
-        "resourceKey": "list.sloane.service-renewals",
+        "resourceKey": "list.sloane-household-procurement-ai-persona.service-renewals",
         "assetPath": "assets/list.json",
         "definitionFingerprint": "33ee7c263e9187793ef23ea287d1e24d1c7a8aa85e3d904033872576e1ff155c"
       }
     },
     {
-      "id": "pipeline:pipeline.sloane.service-renewal-workflow",
+      "id": "pipeline:pipeline.sloane-household-procurement-ai-persona.service-renewal-workflow",
       "kind": "pipeline",
       "displayName": "service-renewal-workflow",
       "path": "references/pipelines/pipeline-sloane-service-renewal-workflow",
@@ -31,13 +31,13 @@
         "assets/pipeline.json"
       ],
       "portable": {
-        "resourceKey": "pipeline.sloane.service-renewal-workflow",
+        "resourceKey": "pipeline.sloane-household-procurement-ai-persona.service-renewal-workflow",
         "assetPath": "assets/pipeline.json",
         "definitionFingerprint": "bd08a559c4f251a8ee45319d85af4a64a3f60a7ddf353bd3e1705f10a37dc806"
       }
     },
     {
-      "id": "workflow:workflow.sloane.renew-a-household-service-personal",
+      "id": "workflow:workflow.sloane-household-procurement-ai-persona.renew-a-household-service-personal",
       "kind": "workflow",
       "displayName": "Renew a household service (personal)",
       "path": "references/workflows/workflow-sloane-renew-a-household-service-personal",
@@ -48,7 +48,7 @@
         "assets/workflow.json"
       ],
       "portable": {
-        "resourceKey": "workflow.sloane.renew-a-household-service-personal",
+        "resourceKey": "workflow.sloane-household-procurement-ai-persona.renew-a-household-service-personal",
         "assetPath": "assets/workflow.json",
         "definitionFingerprint": "8459b35dbda852a25f60d3f41aac07748cd70d24627f4196c429e1bfa5da7234"
       }
@@ -57,25 +57,25 @@
   "edges": [
     {
       "from": "persona",
-      "to": "workflow:workflow.sloane.renew-a-household-service-personal",
+      "to": "workflow:workflow.sloane-household-procurement-ai-persona.renew-a-household-service-personal",
       "relation": "slashCommand",
       "source": "persona.slashCommand.renew-a-household-service-personal"
     },
     {
       "from": "persona",
-      "to": "workflow:workflow.sloane.renew-a-household-service-personal",
+      "to": "workflow:workflow.sloane-household-procurement-ai-persona.renew-a-household-service-personal",
       "relation": "workflowRef",
       "source": "persona.workflowRef"
     },
     {
-      "from": "pipeline:pipeline.sloane.service-renewal-workflow",
-      "to": "list:list.sloane.service-renewals",
+      "from": "pipeline:pipeline.sloane-household-procurement-ai-persona.service-renewal-workflow",
+      "to": "list:list.sloane-household-procurement-ai-persona.service-renewals",
       "relation": "listRef",
       "source": "pipeline.storage.listRef"
     },
     {
-      "from": "workflow:workflow.sloane.renew-a-household-service-personal",
-      "to": "pipeline:pipeline.sloane.service-renewal-workflow",
+      "from": "workflow:workflow.sloane-household-procurement-ai-persona.renew-a-household-service-personal",
+      "to": "pipeline:pipeline.sloane-household-procurement-ai-persona.service-renewal-workflow",
       "relation": "pipelineRef",
       "source": "workflow.pipelineRef"
     }
