@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updatedAt": 1787933457322,
+  "updatedAt": 1788097557078,
   "repos": [
     {
       "kind": "list",
@@ -11,7 +11,7 @@
       "branch": "main",
       "assetPath": "assets/list.json",
       "definitionFingerprint": "6a86dffed492be2e6cdb3603b6dc2d7c28fe1b8e77fc87297098828b57e1f341",
-      "revision": "c60f34657eb7320d9fcc17bd7c664b3c9d1d22ee"
+      "revision": "be94f72b1584c16e5007e11c70a2baabd3bde4c3"
     },
     {
       "kind": "pipeline",
@@ -32,8 +32,8 @@
       "repositoryUrl": "https://github.com/2biz-byte/sloane-renew-renewal-workflow.git",
       "branch": "main",
       "assetPath": "assets/workflow.json",
-      "definitionFingerprint": "98bba82281a9fd71aa454b35e332f2539e71c2a0272dd274a79f74a58f957f3a",
-      "revision": "58e1ec7b4edcfc0cfc3c7d733e29250ba8f88f36"
+      "definitionFingerprint": "8f96e281c733fe8311d7ed8f85fa1d1065e69227ebeb1d7da59a13bf5ffa493d",
+      "revision": "73d7c93f7799d793f9e23f0d97ed3a353ec1b985"
     }
   ]
 }
