@@ -113,7 +113,66 @@
         "enabled": false,
         "provider": "google"
       }
-    }
+    },
+    "temperature": 0.7,
+    "voiceId": "",
+    "harnessPolicy": {
+      "allowedCapabilities": [],
+      "allowedApprovalChannels": [
+        "email",
+        "sms",
+        "imessage",
+        "slack",
+        "whatsapp",
+        "discord",
+        "telegram"
+      ]
+    },
+    "avatarPreviewPosterUrl": "/assets/gabriel-twins/nora-banking-finance.png",
+    "avatarPreviewVideoUrl": "/assets/gabriel-twins/avatars/nora.mp4",
+    "outputIntegration": {
+      "provider": "native",
+      "pipelineListBindings": {
+        "pl_e13390d8fa6d": "list_b70d41025e07"
+      },
+      "activeDataListId": "list_b70d41025e07",
+      "legacyListsMigratedAt": "2026-08-27T12:56:53.147Z"
+    },
+    "endpoints": [
+      {
+        "id": "7d0c8359-e715-45fe-8050-44b7843aecc0",
+        "name": "Sloane Sheets Summarize Usage",
+        "slug": "sloane-sheets-summarize-usage",
+        "createdAt": 1787838032787,
+        "updatedAt": 1787838032787,
+        "workflow": {
+          "nodes": [],
+          "edges": []
+        }
+      },
+      {
+        "id": "83faffcd-35d9-404c-9859-2464a6a26a1c",
+        "name": "Sloane Gmail Read Renewal",
+        "slug": "sloane-gmail-read-renewal",
+        "createdAt": 1787840428145,
+        "updatedAt": 1787840428145,
+        "workflow": {
+          "nodes": [],
+          "edges": []
+        }
+      },
+      {
+        "id": "315a75ff-cf82-487a-8547-713d4530e997",
+        "name": "Sloane Gmail Draft Negotiation",
+        "slug": "sloane-gmail-draft-negotiation",
+        "createdAt": 1787840435251,
+        "updatedAt": 1787840435251,
+        "workflow": {
+          "nodes": [],
+          "edges": []
+        }
+      }
+    ]
   },
   "pageProfile": {
     "title": "Sloane -- Household Procurement AI Persona",
@@ -151,5 +210,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1787932729935
+  "updatedAt": 1788097641231
 }
