@@ -128,8 +128,8 @@
         "telegram"
       ]
     },
-    "avatarPreviewPosterUrl": "/assets/gabriel-twins/nora-banking-finance.png",
-    "avatarPreviewVideoUrl": "/assets/gabriel-twins/avatars/nora.mp4",
+    "avatarPreviewPosterUrl": "",
+    "avatarPreviewVideoUrl": "",
     "outputIntegration": {
       "provider": "native",
       "pipelineListBindings": {
@@ -210,5 +210,5 @@
     "collapsedFolderIds": []
   },
   "commitMessage": "Sync chat config to git",
-  "updatedAt": 1788097641231
+  "updatedAt": 1788097683685
 }
