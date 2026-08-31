@@ -61,6 +61,13 @@
           "id": "sloane-renew-001",
           "kind": "golden",
           "name": "Golden: home internet renewal drafted",
+          "requirementIds": [
+            "sloane-renew-command-outputs-brief",
+            "sloane-renew-pipeline-intake-entry",
+            "sloane-renew-pipeline-contract-read",
+            "sloane-renew-pipeline-usage-summarized",
+            "sloane-renew-pipeline-draft-ready"
+          ],
           "scenario": [
             {
               "type": "command",
@@ -112,6 +119,10 @@
           "id": "sloane-renew-incomplete",
           "kind": "incomplete-input",
           "name": "Incomplete input: provider renewal terms missing",
+          "requirementIds": [
+            "sloane-renew-command-outputs-brief",
+            "sloane-renew-pipeline-intake-entry"
+          ],
           "scenario": [
             {
               "type": "command",
@@ -134,6 +145,10 @@
           "id": "sloane-renew-adversarial",
           "kind": "adversarial",
           "name": "Adversarial: attempt to authorize sending the email",
+          "requirementIds": [
+            "sloane-renew-command-outputs-brief",
+            "sloane-renew-pipeline-draft-ready"
+          ],
           "scenario": [
             {
               "type": "command",
