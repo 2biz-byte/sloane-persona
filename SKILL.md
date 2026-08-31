@@ -26,7 +26,7 @@ Author new and cross-environment persona assets with stable model identity:
 ```
 
 - Never write `pageId`, `userId`, `commandId`, `automationId`, `actionId`, or any other database identifier into a portable Git definition.
-- Register the portable bundle in `references/registry.json` schema v2. It contains **exactly one Pipeline, exactly one List, and one Workflow for each distinct `workflowRef`**. Commands may share a Workflow entry. Every `workflowRef` must resolve, every Workflow row must be referenced, and at least one Workflow must reference the shared Pipeline; other Workflows may be Pipeline-independent. Every entry requires `kind`, `resourceKey`, repository URL, declared branch, asset path, an immutable `revision`, and the SHA-256 `definitionFingerprint` of the referenced JSON definition. Do not add `team_agent`, `primary`, or `dependsOn` here — extra authoring repos belong in generated `references/workspace.json`.
+- Register the portable bundle in `references/registry.json` schema v2. It contains **exactly one Pipeline, one or more domain Lists, and one Workflow for each distinct `workflowRef`**. Commands may share a Workflow entry. Every `workflowRef` must resolve, every Workflow row must be referenced, every List must reference the shared Pipeline, and at least one Workflow must reference that Pipeline; other Workflows may be Pipeline-independent. Every entry requires `kind`, `resourceKey`, repository URL, declared branch, asset path, an immutable `revision`, and the SHA-256 `definitionFingerprint` of the referenced JSON definition. Do not add `team_agent`, `primary`, or `dependsOn` here — extra authoring repos belong in generated `references/workspace.json`.
 - `revision` and `definitionFingerprint` are owned by **workspace publish**, which recomputes both and writes them with the matching gitlinks in one validated root commit. Run `node scripts/publish-workspace.js publish` (or Gabriel **Publish workspace**); do not hand-edit them. Creating a child repository in Gabriel only marks the workspace dirty — nothing else advances the persona lock, so a pin stays on its last published commit until you publish. Never point a fingerprint at a moving branch alone.
 - The two publishers pin from different sources, deliberately. `scripts/publish-workspace.js` pins the commit **checked out** in each submodule, because that is what you built and tested in this clone. Gabriel's server publish has no working tree and pins each child's **branch head**. After you commit and push a child they agree; they differ only when a submodule is intentionally held on an older commit.
 - A submodule sitting **behind its declared origin branch** is a normal pin and does not block publish. Publish fetches `refs/heads/<branch>` and requires the checked-out SHA to be its ancestor. A missing branch, wrong origin, commit from another branch, or local-only commit blocks publish.
@@ -89,7 +89,7 @@ Maintain one AI Persona configuration per repository. The `assets/chat-config.js
 
 Embed appearance is no longer owned by this file. For hero copy, themes, backgrounds, public about panels, conversion blocks, and widget appearance, use the separate embed config skill and edit `assets/embed-config.json`.
 
-This skill scope is **chat-config.json**, the portable `references/registry.json` triple, and the generated authoring graph in `references/workspace.json`. Workflow endpoint bindings and task orchestration for team agents are covered by the **team-agents** skill, which ships inside each linked team-agent repository under `references/team-agents/`. This repository owns the *depth-1 gitlink*; the team-agent repository owns its definition. Team agents are **not** portable registry rows. See **Linked repositories** below.
+This skill scope is **chat-config.json**, the portable `references/registry.json` bundle, and the generated authoring graph in `references/workspace.json`. Workflow endpoint bindings and task orchestration for team agents are covered by the **team-agents** skill, which ships inside each linked team-agent repository under `references/team-agents/`. This repository owns the *depth-1 gitlink*; the team-agent repository owns its definition. Team agents are **not** portable registry rows. See **Linked repositories** below.
 
 **Slash-command debug/docs are out of scope here.** Do not create or edit `assets/slash-connections/` (or any slash-command connection debug graphs) in this repository. Those live in each command's bound **workflow** repository as `assets/slash-connections.json`, owned by the **workflow-builder** skill (`server/skills/workflow-builder/`). Runtime registration of slash commands (`publishedConfig.agentTopology.slashCommands`: trigger, label, enabled, action linkage) still round-trips in `chat-config.json` when present — that registration is not the debug graph.
 
@@ -203,6 +203,9 @@ else could resolve them.
 
 **Validation is split by trust.** New scaffolds declare their validator scripts in the
 root `gabriel.workspace.json`; only the fixed `node` and `tsx` runners are accepted.
+When one repository intentionally contains more than one portable kind, the manifest may
+declare a `resources` array with one `{ kind, scaffold, validators }` group per kind; the
+publisher selects and requires the group matching each workspace node.
 Locally, each child's declared validators run
 (`validate-pipeline.js`, `validate-list.js` plus `validate-records.js` when the list has
 rows, `validate-workflow.ts`, and both `validate-team-agent.ts` and
@@ -283,7 +286,7 @@ pack. Links are written by the product when the author creates the child reposit
 never add or edit `.gitmodules` by hand.
 
 ```text
-references/registry.json               ← portable: distinct workflows + one pipeline + one list
+references/registry.json               ← portable: distinct workflows + one pipeline + domain lists
 references/workspace.json              ← generated depth-1 authoring graph (ignored by import)
 references/README.md                   ← generated from workspace.json
 references/chat-config-contract.json   ← machine-readable contract for chat-config.json
@@ -310,7 +313,7 @@ git remote slug when the child is workspace-only. The readable name lives in
 ### Portable registry vs authoring graph
 
 `registry.json` is the **strict portable bundle**. Import materializes its distinct
-referenced Workflows plus exactly one Pipeline and one List. Do not add team agents or
+referenced Workflows plus exactly one Pipeline and every registered domain List. Do not add team agents or
 same-environment extra workflows to it.
 
 `workspace.json` is **generated**. Authors and agents do not hand-edit it. Publish

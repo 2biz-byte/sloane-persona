@@ -133,13 +133,18 @@ function validatePortableBundle({ repoRoot }) {
   }
   auditLocalIds({ value: persona.publishedConfig || {}, kind: 'persona', issues });
 
-  // One workflow per distinct workflowRef; the Pipeline and List are the shared spine.
+  // One workflow per distinct workflowRef, one Pipeline, and one or more domain Lists.
   const workflowEntries = [];
+  const listEntries = [];
   const byKind = {};
   for (const entry of registry.repos) {
     if (!entry || !entry.kind) continue;
     if (entry.kind === 'workflow') {
       workflowEntries.push(entry);
+      continue;
+    }
+    if (entry.kind === 'list') {
+      listEntries.push(entry);
       continue;
     }
     if (byKind[entry.kind]) {
@@ -151,15 +156,14 @@ function validatePortableBundle({ repoRoot }) {
   if (workflowEntries.length === 0) {
     issues.push('references/registry.json is missing its workflow dependency.');
   }
-  for (const kind of ['pipeline', 'list']) {
-    if (!byKind[kind]) issues.push(`references/registry.json is missing its ${kind} dependency.`);
-  }
-  if (registry.repos.length !== workflowEntries.length + 2) {
+  if (!byKind.pipeline) issues.push('references/registry.json is missing its pipeline dependency.');
+  if (listEntries.length === 0) issues.push('references/registry.json is missing its list dependency.');
+  if (registry.repos.length !== workflowEntries.length + listEntries.length + 1) {
     issues.push(
-      `references/registry.json must contain exactly one Pipeline, one List, and one Workflow per distinct workflowRef — expected ${workflowEntries.length + 2}, found ${registry.repos.length}.`,
+      `references/registry.json must contain exactly one Pipeline, every List, and one Workflow per distinct workflowRef — expected ${workflowEntries.length + listEntries.length + 1}, found ${registry.repos.length}.`,
     );
   }
-  if (workflowEntries.length === 0 || !byKind.pipeline || !byKind.list) return issues;
+  if (workflowEntries.length === 0 || !byKind.pipeline || listEntries.length === 0) return issues;
 
   // Each definition must exist at its declared path, carry a matching portable header, hold
   // no environment-local ids, and match the fingerprint the manifest pinned for it.
@@ -185,9 +189,9 @@ function validatePortableBundle({ repoRoot }) {
   const workflowDefinitions = workflowEntries.map((entry) => readDefinition({ kind: 'workflow', entry }));
   const definitions = {
     pipeline: readDefinition({ kind: 'pipeline', entry: byKind.pipeline }),
-    list: readDefinition({ kind: 'list', entry: byKind.list }),
+    lists: listEntries.map((entry) => readDefinition({ kind: 'list', entry })),
   };
-  if (workflowDefinitions.some((definition) => !definition) || !definitions.pipeline || !definitions.list) {
+  if (workflowDefinitions.some((definition) => !definition) || !definitions.pipeline || definitions.lists.some((definition) => !definition)) {
     return issues;
   }
 
@@ -231,16 +235,18 @@ function validatePortableBundle({ repoRoot }) {
     refs: collectRefs({ value: definitions.pipeline.storage || {}, key: 'listRef' }),
     refKey: 'listRef',
     expectedKind: 'list',
-    expectedKeys: [byKind.list.resourceKey],
+    expectedKeys: listEntries.map((entry) => entry.resourceKey),
     issues,
   });
-  checkRef({
-    owner: 'list.list',
-    refs: collectRefs({ value: definitions.list.list || {}, key: 'pipelineRef' }),
-    refKey: 'pipelineRef',
-    expectedKind: 'pipeline',
-    expectedKeys: [byKind.pipeline.resourceKey],
-    issues,
+  definitions.lists.forEach((definition, index) => {
+    checkRef({
+      owner: `list:${listEntries[index].resourceKey}.list`,
+      refs: collectRefs({ value: definition.list || {}, key: 'pipelineRef' }),
+      refKey: 'pipelineRef',
+      expectedKind: 'pipeline',
+      expectedKeys: [byKind.pipeline.resourceKey],
+      issues,
+    });
   });
 
   return issues;
