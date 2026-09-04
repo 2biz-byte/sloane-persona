@@ -89,6 +89,102 @@ Maintain one AI Persona configuration per repository. The `assets/chat-config.js
 
 Embed appearance is no longer owned by this file. For hero copy, themes, backgrounds, public about panels, conversion blocks, and widget appearance, use the separate embed config skill and edit `assets/embed-config.json`.
 
+When `publishedConfig.landingPage` is present, its schema-version-2 `localization` object is authoritative for public translation and country-specific full-page variants. It is required on newly created landing pages and optional only when reading legacy pages. `localization.translation` contains `enabled`, `sourceLanguage`, `defaultLanguage`, optional `autoDetectCountryLanguage` (default true), and platform-generated `generatedTranslations`; `localization.regionalPages[]` contains a unique key/label, unique uppercase ISO alpha-2 country assignments, a regional default language, and a complete landing page under `page` with no nested `localization`. Market-managed regions additionally own `sourceLanguage` and a `marketContext` containing locale, canonical source asset path, context revision, protected glossary terms, and evidence. Automatic country language selection uses the server-resolved request-IP country and CLDR likely-language data, while a matched regional default remains authoritative. Generated translations are a source-revisioned manifest: base copy is stored as `assets/landing-page.<language>.json`, while new market translations live at `assets/markets/<country>/landing-page.<language>.json`; runtime reads only the selected asset. New entries advertise `assetSchemaVersion: 2`; each v2 asset indexes translated paths by original source hash so unchanged copy can be safely rebased after an authored edit. A market asset may be reused only when its context revision still matches. Matching or safely reusable entries are served before visitor quota, and only genuinely changed strings reach the provider. The landing-page-builder repository remains the authoring source and its existing publish workflow mirrors the manifest and language files into this parent repository. Legacy inline cache entries, exact version-1 assets, flat regional paths, and `chatEmbedConfig.translationEnabled/defaultLanguage` remain read-compatible. Never author quota values, visitor identities, IP addresses, or manual visitor region overrides in Git. Do not hand-invent generated translation revisions or paths; use the platform flow or validated repository tooling.
+
+**Split files are the write contract.** `assets/chat-config.json` stores the compact
+manifest projection only. A new `generatedTranslations[]` entry must have `assetPath`
+and must not have `page` or `chatEmbedConfig`; those values live in that one asset file.
+Never consolidate language files during a Persona sync. When a database projection still
+contains inline legacy entries, the Git writer must externalize them atomically with the
+manifest update. Reads may support the legacy shape, but edits and syncs may not produce
+it. Runtime must resolve the manifest and fetch only the requested locale asset.
+
+### Create-time defaults (new personas)
+
+When creating a persona or writing a first `assets/chat-config.json`, always persist the keys below. Do not omit them: product fallbacks treat missing `todosConfig` and missing `checkInScheduleConfig.enabled` as **on**.
+
+**Landing-page localization — always on when a landing page is created.** Every
+new `publishedConfig.landingPage` must contain this baseline; do not expose localization
+as a separate create-time opt-in:
+
+```json
+{
+  "localization": {
+    "translation": {
+      "enabled": true,
+      "sourceLanguage": "en",
+      "defaultLanguage": "en",
+      "autoDetectCountryLanguage": true,
+      "generatedTranslations": []
+    },
+    "regionalPages": []
+  }
+}
+```
+
+After the English page is final, and again after every authored page change, use `landing-page-translations` to incrementally refresh and validate
+the maintained 37-language cache, mirror the compact manifest and every language asset from
+the landing-page child into this parent repository, and commit child first. Keep the settings enabled even if a
+provider is temporarily unavailable; report missing cache coverage rather than removing
+the localization object. `translateConfig` is a different voice/assistant feature and
+must not be enabled as a substitute.
+
+The required filename is `assets/landing-page.<language>.json`; market content uses
+`assets/markets/<country>/landing-page.json` plus one `landing-page.<language>.json` per
+non-canonical language. English stays in the authored base
+page. Preserve stale assets until the generator has recovered their unchanged copy from
+Git history; never delete them and force an avoidable full translation. Before handoff,
+reject any newly written manifest entry containing an inline `page`,
+run the translation skill's migration mode for legacy entries, and run its `--check`.
+For jurisdiction-specific copy, read `../landing-page-markets/SKILL.md`; country routing
+must occur before translation and protected market terms must not be translated away.
+
+**Voice Agents — always on, Gemini Live only.** Enable Talk on every new persona and always set the provider to Gemini. Never default to xAI, LiveKit, Vapi, or Vapi Squad.
+
+```json
+{
+  "voiceAgentEnabled": true,
+  "voiceOnlyAgentEnabled": true,
+  "voiceProvider": "gemini",
+  "geminiLiveModel": "gemini-3.1-flash-live-preview",
+  "geminiLiveVoice": "Aoede"
+}
+```
+
+Also call `gabriel_update_twin_config` with the same keys. Writing them only in this file leaves Configure / owner chat on stale draft Mongo (`voiceAgentEnabled: false`) until a pull.
+
+Do not enable `digitalAvatarAgentEnabled`, `phoneAgentEnabled`, `coachConfig`, `translateConfig`, or `meetingsConfig` unless the user asked.
+
+**Operator slash-command Talk — command-level `voiceAgent`, not only persona Talk.** The Talk / Digital Avatar picker reads `publishedConfig.agentTopology.slashCommands[].voiceAgent`. Persona `voiceAgentEnabled` does not activate an operator. On every operator command you want in Talk, set:
+
+```json
+{
+  "id": "slash-command-1",
+  "trigger": "run",
+  "label": "Run",
+  "execution": { "type": "operator_action" },
+  "voiceAgent": {
+    "enabled": true,
+    "prompt": "Ask what the user wants, gather the required details, read them back, and confirm before starting."
+  }
+}
+```
+
+A non-empty `prompt` is required. `{ "enabled": true }` with an empty prompt is dropped. Do not rely on `execution.canvas.voiceAgent` for `operator_action` commands.
+
+**To-Dos — always off.** The chat **To-Dos button** is only `publishedConfig.todosConfig.enabled`. Write `{ "todosConfig": { "enabled": false } }`. Never set `voiceAgentEnabled` false to hide To-Dos. Never use `todoConfig`. A boolean `"todosConfig": false` is coerced to `{ "enabled": false }`, but prefer the object form.
+
+**Checkin Mentor is not the To-Dos button.** It is the Calls-menu check-in (`checkInScheduleConfig`). Leave it off with `{ "checkInScheduleConfig": { "enabled": false } }`. That does not hide To-Dos and must not change Talk.
+
+```json
+{
+  "todosConfig": { "enabled": false },
+  "checkInScheduleConfig": { "enabled": false }
+}
+```
+
+Only turn To-Dos or Checkin Mentor on later if the user explicitly asks.
+
 This skill scope is **chat-config.json**, the portable `references/registry.json` bundle, and the generated authoring graph in `references/workspace.json`. Workflow endpoint bindings and task orchestration for team agents are covered by the **team-agents** skill, which ships inside each linked team-agent repository under `references/team-agents/`. This repository owns the *depth-1 gitlink*; the team-agent repository owns its definition. Team agents are **not** portable registry rows. See **Linked repositories** below.
 
 **Slash-command debug/docs are out of scope here.** Do not create or edit `assets/slash-connections/` (or any slash-command connection debug graphs) in this repository. Those live in each command's bound **workflow** repository as `assets/slash-connections.json`, owned by the **workflow-builder** skill (`server/skills/workflow-builder/`). Runtime registration of slash commands (`publishedConfig.agentTopology.slashCommands`: trigger, label, enabled, action linkage) still round-trips in `chat-config.json` when present — that registration is not the debug graph.
@@ -481,13 +577,15 @@ When a coding agent **edits git**, treat `publishedConfig` as the same shape the
 #### Voice agent stack (LiveKit / telephony / xAI / Anam)
 | Field | Purpose |
 |-------|---------|
-| `voiceAgentEnabled` | Master switch for voice agent sessions. |
-| `voiceOnlyAgentEnabled` | Audio-only voice mode. |
-| `digitalAvatarAgentEnabled` | Avatar video mode when supported. |
-| `phoneAgentEnabled` | Telephony integration enabled. |
+| `voiceAgentEnabled` | Master switch for voice agent sessions. New personas must set this `true` **and** patch it with `gabriel_update_twin_config` (git-only is not enough for Configure / owner chat). |
+| `voiceOnlyAgentEnabled` | Audio-only Talk mode. New personas must set this `true` with Gemini Live. |
+| `agentTopology.slashCommands[].voiceAgent` | Operator Talk. `{ "enabled": true, "prompt": "..." }` on the **command** (not only canvas). Empty prompt is ignored. |
+| `digitalAvatarAgentEnabled` | Avatar video mode when supported. Leave off on create unless asked. |
+| `phoneAgentEnabled` | Telephony integration enabled. Leave off on create unless asked. |
 | `callButtonConfig` | Visitor-facing label and icon for the Talk option in the Calls launcher. |
 | `phoneCallButtonConfig` | Visitor-facing label and icon for the Phone option in the Calls launcher. |
-| `checkInScheduleConfig.appearance` | Label and icon for Checkin Mentor. |
+| `checkInScheduleConfig` | Checkin Mentor in the Calls menu. Not the To-Dos button and not Gemini Talk. Omitted `enabled` means on. New personas must write `{ "enabled": false }`. Do not create this voice agent by default. |
+| `checkInScheduleConfig.appearance` | Label and icon for Checkin Mentor (only if the user later enables it). |
 | `coachConfig.appearance` | Label and icon for Coach. |
 | `translateConfig.appearance` | Label and icon for Translate. |
 | `twilioCredentialId` | Reference id to user’s saved Twilio credential (not the secret itself). |
@@ -506,7 +604,7 @@ When a coding agent **edits git**, treat `publishedConfig` as the same shape the
 | `anamKeyId` / `anamAvatarId` / `anamPersonaName` / `anamApiUrl` / `anamRenderVideo` / `anamVoiceId` / `anamLlmId` | Anam avatar plugin configuration. |
 | `ttsModel` / `ttsVoice` / `ttsVoiceCustom` / `ttsLanguage` | Text-to-speech stack. |
 | `sttModel` / `sttLanguage` | Speech-to-text stack. |
-| `voiceProvider` | Voice stack provider key. |
+| `voiceProvider` | Voice stack provider. **Always `"gemini"`** when enabling Talk on a new persona. Never default to `xai`, `livekit`, `vapi`, or `vapi-squad`. |
 | `vapiSquadId` / `vapiAssistantId` | Legacy Vapi ids when used. |
 | `voiceLlmModel` | Separate LLM for voice path vs chat. |
 | `backgroundAudio` | Ambient loop: `none`, `office`, `cafe`, `nature`. |
@@ -517,7 +615,7 @@ When a coding agent **edits git**, treat `publishedConfig` as the same shape the
 | `browserProviderId` | Browser automation provider for goals/workflows. |
 | `guardianRequirements` | Guardian policy requirements (browser, sites, credential types). |
 | `geminiProviderId` | Gemini File Search provider id. |
-| `geminiLiveProviderId` / `geminiLiveModel` / `geminiLiveVoice` / `geminiLiveWebSearchEnabled` | Gemini Live realtime voice configuration. |
+| `geminiLiveProviderId` / `geminiLiveModel` / `geminiLiveVoice` / `geminiLiveWebSearchEnabled` | Gemini Live realtime voice configuration. New personas: `geminiLiveModel` `"gemini-3.1-flash-live-preview"`, `geminiLiveVoice` `"Aoede"`. |
 | `xaiProviderId` | xAI File Search provider id. |
 | `mem0ProviderId` | mem0 memory provider id. |
 | `jarvisMode` | Optional `{ "enabled": boolean, "localComputerControl": boolean, "preferredTransport": "runner-choice" \| "realtime" \| "local-hybrid" }`. Both capability switches default off. This is local Gabriel Desktop control and is independent of `computerConfig`. |
@@ -533,8 +631,10 @@ When a coding agent **edits git**, treat `publishedConfig` as the same shape the
 |-------|---------|
 | `formUi` | Optional form/cart UI configuration used by the page chat surface; merged from draft so git has the active UI behavior. |
 | `chatImageUpload` | Optional image-upload and image-resolver configuration for chat; merged from draft into git when present. |
+| `landingPage` | Optional only when no marketing page exists. Every newly created landing page must include enabled schema-v2 localization, IP-country language detection, and the source-revisioned generated cache produced by `landing-page-translations`. |
+| `todosConfig` | Optional `{ "enabled": boolean }`. Product default when omitted is **on**. New personas must persist `{ "enabled": false }`. Do not enable To-Dos or invoke `todo-builder` on create. |
 | `qualityControlConfig` | Optional `{ "enabled": boolean, "subscriberSimulationEnabled"?: boolean }`. Both default false. Subscriber simulation is effective only when both are explicitly true; disabling Quality must persist the nested flag as false. The full object is merged from draft into git and fingerprints the release candidate. |
-| `agentTopology` | Runtime agent topology for multi-supervisor, built-in subagents, custom subagents, and **slash command registration** (`slashCommands`); merged from draft into git when present. Registration only — slash-command **debug graphs** are not stored in this file (see workflow-builder / `assets/slash-connections.json` on the bound workflow repo). |
+| `agentTopology` | Runtime agent topology for multi-supervisor, built-in subagents, custom subagents, and **slash command registration** (`slashCommands`); merged from draft into git when present. Each operator command that should appear in Talk must include command-level `voiceAgent.enabled` plus a non-empty `prompt`. Registration only — slash-command **debug graphs** are not stored in this file (see workflow-builder / `assets/slash-connections.json` on the bound workflow repo). |
 | `computerConfig` | Dedicated computer / sandbox configuration. See **Dedicated Computer** section below. |
 | `emailConfig` | Dedicated inbox configuration. See **Dedicated Inbox** section below. |
 
