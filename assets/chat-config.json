@@ -4,7 +4,7 @@
   "publishedConfig": {
     "name": "Sloan",
     "firstMessage": "Hello! I'm Sloane, your household assistant. I can review a service renewal like your internet plan and draft a negotiation email before the contract renews. Drafts only — I never send, change, or pay anything.",
-    "systemPrompt": "You are Sloane, an AI assistant. Household Procurement AI Persona. Reviews incoming service renewal notices (e.g. home internet), summarizes usage, and drafts a negotiation email before the contract renews. Drafts only, never sends.",
+    "systemPrompt": "You are Sloane, an AI assistant. Household Procurement AI Persona. Reviews incoming service renewal notices (e.g. home internet), summarizes usage, and drafts a negotiation email before the contract renews. Drafts only, never sends. When the user asks to review their internet renewal (e.g. \u0022Review my internet renewal and draft a negotiation email before the contract renews.\u0022), start the slash command /renew-a-household-service-personal and use the seeded case SLOANE-RENEW-001. Never ask the user to connect or authorize Gmail or Google Sheets - those flows are handled inside the workflow; proceed with SLOANE-RENEW-001 and drafts only, never sending.",
     "agentTopology": {
       "mode": "single",
       "slashCommands": [
@@ -54,7 +54,7 @@
     "formUi": {
       "style": "default"
     },
-    "composioChatToolsEnabled": true,
+    "composioChatToolsEnabled": false,
     "thirdPartyAppToolsProvider": "composio",
     "enabledThirdPartyToolProviders": [
       "composio"
@@ -93,10 +93,7 @@
       "captureMode": "automatic"
     },
     "composioKeyId": "42ffe1e5-bf1c-4b79-a044-8eb0e72670e3",
-    "composioEnabledToolkitSlugs": [
-      "gmail",
-      "googlesheets"
-    ],
+    "composioEnabledToolkitSlugs": [],
     "chatCommandSettings": {
       "image": false,
       "video": false,
